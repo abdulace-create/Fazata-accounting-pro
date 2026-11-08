@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>FAZATA ACCOUNTING PRO</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#f3f5f9;color:#172033}
+header{background:#101827;color:white;padding:22px 16px}
+header h2{margin:0;color:#f5a623}
+header p{margin:7px 0 0;color:#cbd5e1}
+main{padding:16px;max-width:850px;margin:auto}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:white;padding:17px;border-radius:13px;box-shadow:0 2px 8px #0000000c}
+.card small{color:#64748b}
+.card h2{margin:10px 0 0;font-size:23px}
+section{background:white;padding:17px;border-radius:13px;margin-top:16px}
+button{border:0;background:#f0a323;color:#111827;padding:12px 17px;border-radius:8px;font-weight:bold;cursor:pointer}
+nav{display:flex;gap:8px;overflow:auto;margin:16px 0}
+nav button{white-space:nowrap;background:#e2e8f0}
+nav button.active{background:#f0a323}
+input,select{width:100%;padding:12px;margin:8px 0 14px;border:1px solid #cbd5e1;border-radius:8px;font-size:16px}
+.entry{border-bottom:1px solid #e2e8f0;padding:12px 0}
+.hidden{display:none}
+.green{color:green}
+.red{color:#dc2626}
+</style>
+</head>
+<body>
+<header>
+<h2>FAZATA ACCOUNTING PRO</h2>
+<p>Smart Business Management System</p>
+</header>
+
+<main>
+<nav>
+<button class="active" onclick="show('dashboard',this)">Home</button>
+<button onclick="show('sales',this)">Sales</button>
+<button onclick="show('expenses',this)">Expenses</button>
+<button onclick="show('records',this)">Records</button>
+</nav>
+
+<div id="dashboard">
+<h3>Business Dashboard</h3>
+<div class="cards">
+<div class="card"><small>Total Sales</small><h2 id="totalSales">₹0</h2></div>
+<div class="card"><small>Total Expenses</small><h2 id="totalExpenses">₹0</h2></div>
+<div class="card"><small>Net Balance</small><h2 id="balance">₹0</h2></div>
+<div class="card"><small>Total Entries</small><h2 id="count">0</h2></div>
+</div>
+<section>
+<h3>Welcome to Fazata</h3>
+<p>Manage your daily business transactions in one place.</p>
+</section>
+</div>
+
+<div id="sales" class="hidden">
+<section>
+<h3>Add New Sale</h3>
+<label>Customer Name</label>
+<input id="saleName" placeholder="Customer name">
+<label>Sale Amount (₹)</label>
+<input id="saleAmount" type="number" min="0" placeholder="Enter amount">
+<button onclick="add('sale')">Save Sale</button>
+</section>
+</div>
+
+<div id="expenses" class="hidden">
+<section>
+<h3>Add New Expense</h3>
+<label>Expense Details</label>
+<input id="expenseName" placeholder="Expense name">
+<label>Amount (₹)</label>
+<input id="expenseAmount" type="number" min="0" placeholder="Enter amount">
+<button onclick="add('expense')">Save Expense</button>
+</section>
+</div>
+
+<div id="records" class="hidden">
+<section>
+<h3>Transaction Records</h3>
+<div id="list">No records yet.</div>
+</section>
+</div>
+</main>
+
+<script>
+let entries=JSON.parse(localStorage.getItem('fazataEntries')||'[]');
+
+function save(){
+localStorage.setItem('fazataEntries',JSON.stringify(entries));
+update();
+}
+
+function add(type){
+let name=document.getElementById(type+'Name').value.trim();
+let amount=Number(document.getElementById(type+'Amount').value);
+if(!name||!Number.isFinite(amount)||amount<=0){
+alert('Please enter a name and valid amount.');
+return;
+}
+entries.unshift({
+type:type,
+name:name,
+amount:amount,
+date:new Date().toLocaleDateString()
+});
+document.getElementById(type+'Name').value='';
+document.getElementById(type+'Amount').value='';
+save();
+alert('Entry saved successfully!');
+show('dashboard',document.querySelector('nav button'));
+}
+
+function update(){
+let sales=entries.filter(x=>x.type==='sale').reduce((a,b)=>a+b.amount,0);
+let expenses=entries.filter(x=>x.type==='expense').reduce((a,b)=>a+b.amount,0);
+document.getElementById('totalSales').textContent='₹'+sales.toLocaleString('en-IN');
+document.getElementById('totalExpenses').textContent='₹'+expenses.toLocaleString('en-IN');
+document.getElementById('balance').textContent='₹'+(sales-expenses).toLocaleString('en-IN');
+document.getElementById('count').textContent=entries.length;
+document.getElementById('list').innerHTML=entries.length?
+entries.map(x=>`<div class="entry">
+<strong>${escapeText(x.name)}</strong><br>
+<small>${x.date} · ${x.type}</small>
+<strong class="${x.type==='sale'?'green':'red'}" style="float:right">
+${x.type==='sale'?'+':'-'}₹${x.amount.toLocaleString('en-IN')}
+</strong></div>`).join(''):'No records yet.';
+}
+
+function escapeText(value){
+return String(value).replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;',
+'"':'&quot;',"'":'&#39;'
+}[c]));
+}
+
+function show(id,btn){
+['dashboard','sales','expenses','records'].forEach(x=>{
+document.getElementById(x).classList.add('hidden');
+});
+document.getElementById(id).classList.remove('hidden');
+document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+btn.classList.add('active');
+}
+
+update();
+</script>
+</body>
+</html>
