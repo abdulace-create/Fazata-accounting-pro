@@ -3,151 +3,421 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101827">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101a2c">
 <title>FAZATA ACCOUNTING PRO</title>
+
 <style>
+:root{
+--navy:#101a2c;
+--navy2:#192840;
+--gold:#e9a936;
+--bg:#f3f5f9;
+--white:#fff;
+--muted:#8491a5;
+--green:#15966a;
+--red:#dc5151;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#f3f5f9;color:#172033}
-header{background:#101827;color:white;padding:22px 16px}
-header h2{margin:0;color:#f5a623}
-header p{margin:7px 0 0;color:#cbd5e1}
-main{padding:16px;max-width:850px;margin:auto}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{background:white;padding:17px;border-radius:13px;box-shadow:0 2px 8px #0000000c}
-.card small{color:#64748b}
-.card h2{margin:10px 0 0;font-size:23px}
-section{background:white;padding:17px;border-radius:13px;margin-top:16px}
-button{border:0;background:#f0a323;color:#111827;padding:12px 17px;border-radius:8px;font-weight:bold;cursor:pointer}
-nav{display:flex;gap:8px;overflow:auto;margin:16px 0}
-nav button{white-space:nowrap;background:#e2e8f0}
-nav button.active{background:#f0a323}
-input,select{width:100%;padding:12px;margin:8px 0 14px;border:1px solid #cbd5e1;border-radius:8px;font-size:16px}
-.entry{border-bottom:1px solid #e2e8f0;padding:12px 0}
-.hidden{display:none}
-.green{color:green}
-.red{color:#dc2626}
+body{
+margin:0;font-family:Arial,sans-serif;
+background:var(--bg);color:#202c40;
+}
+header{
+background:var(--navy);color:white;
+padding:22px 18px;
+}
+.brand{color:var(--gold);font-size:23px;font-weight:800}
+header p{color:#bdc8d8;margin:7px 0 0;font-size:13px}
+.layout{max-width:1100px;margin:auto;padding:16px}
+.topbar{
+display:flex;justify-content:space-between;
+align-items:center;gap:10px;flex-wrap:wrap;
+}
+.topbar h2{font-size:21px}
+button{
+border:0;border-radius:9px;padding:12px 15px;
+font-weight:700;cursor:pointer;
+}
+.gold{background:var(--gold);color:#172033}
+.dark{background:var(--navy);color:white}
+.light{background:#e7edf5;color:#25344b}
+.nav{
+display:flex;gap:8px;overflow-x:auto;
+padding:12px 0;margin-bottom:15px;
+}
+.nav button{white-space:nowrap;background:#e4eaf2;color:#344258}
+.nav button.active{background:var(--navy);color:var(--gold)}
+.page{display:none}
+.page.active{display:block}
+.grid{
+display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+}
+.stat{
+background:white;padding:18px;border-radius:14px;
+box-shadow:0 3px 12px #15233a0b;
+border:1px solid #edf0f5;
+}
+.stat small{color:var(--muted);font-size:13px}
+.stat h2{margin:12px 0 0;font-size:25px}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.goldtext{color:#b27b18}
+.panel{
+background:white;padding:18px;border-radius:14px;
+margin-top:15px;box-shadow:0 3px 12px #15233a0b;
+}
+.panel h3{margin-top:0}
+input,select{
+width:100%;padding:13px;margin:7px 0 15px;
+border:1px solid #dce2ea;border-radius:8px;
+background:white;font-size:15px;
+}
+label{font-size:13px;font-weight:bold;color:#475569}
+.full{width:100%}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:12px 8px;border-bottom:1px solid #edf0f4;text-align:left}
+th{color:#66758b}
+.tablewrap{overflow-x:auto}
+.item{
+padding:12px 0;border-bottom:1px solid #edf0f4;
+display:flex;justify-content:space-between;gap:8px;
+}
+.muted{color:var(--muted);font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.notice{
+background:#fff6df;color:#76551b;
+padding:12px;border-radius:9px;font-size:12px;margin-top:14px;
+}
+.empty{color:var(--muted);padding:15px 0}
+.bottom{
+position:fixed;bottom:0;left:0;right:0;
+background:var(--navy);display:flex;justify-content:space-around;
+padding:10px 3px calc(10px + env(safe-area-inset-bottom));
+z-index:10;
+}
+.bottom button{
+background:transparent;color:#bdc8d8;
+font-size:11px;padding:7px 5px;
+}
+.bottom button.active{color:var(--gold)}
+.bottom span{display:block;font-size:19px;margin-bottom:4px}
+body{padding-bottom:80px}
+@media(min-width:700px){
+.grid{grid-template-columns:repeat(4,1fr)}
+.layout{padding:25px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<h2>FAZATA ACCOUNTING PRO</h2>
-<p>Smart Business Management System</p>
+<div class="brand">FAZATA ACCOUNTING PRO</div>
+<p>PREMIUM BUSINESS MANAGEMENT SYSTEM</p>
 </header>
 
-<main>
-<nav>
-<button class="active" onclick="show('dashboard',this)">Home</button>
-<button onclick="show('sales',this)">Sales</button>
-<button onclick="show('expenses',this)">Expenses</button>
-<button onclick="show('records',this)">Records</button>
-</nav>
+<div class="layout">
 
-<div id="dashboard">
-<h3>Business Dashboard</h3>
-<div class="cards">
-<div class="card"><small>Total Sales</small><h2 id="totalSales">₹0</h2></div>
-<div class="card"><small>Total Expenses</small><h2 id="totalExpenses">₹0</h2></div>
-<div class="card"><small>Net Balance</small><h2 id="balance">₹0</h2></div>
-<div class="card"><small>Total Entries</small><h2 id="count">0</h2></div>
+<div class="topbar">
+<h2 id="pageTitle">Business Dashboard</h2>
+<button class="gold" onclick="backup()">Export Backup</button>
 </div>
-<section>
-<h3>Welcome to Fazata</h3>
-<p>Manage your daily business transactions in one place.</p>
+
+<div class="nav" id="nav">
+<button class="active" onclick="go('home',this)">Dashboard</button>
+<button onclick="go('sales',this)">Sales</button>
+<button onclick="go('purchase',this)">Purchase</button>
+<button onclick="go('expense',this)">Expenses</button>
+<button onclick="go('customers',this)">Customers</button>
+<button onclick="go('suppliers',this)">Suppliers</button>
+<button onclick="go('stock',this)">Inventory</button>
+<button onclick="go('reports',this)">Reports</button>
+</div>
+
+<!-- DASHBOARD -->
+<section class="page active" id="home">
+<div class="grid">
+<div class="stat"><small>TOTAL SALES</small><h2 id="salesTotal">₹0</h2></div>
+<div class="stat"><small>TOTAL PURCHASE</small><h2 id="purchaseTotal">₹0</h2></div>
+<div class="stat"><small>TOTAL EXPENSES</small><h2 id="expenseTotal">₹0</h2></div>
+<div class="stat"><small>NET BALANCE</small><h2 id="netTotal">₹0</h2></div>
+</div>
+
+<div class="panel">
+<h3>Business Overview</h3>
+<div class="item"><span>Total Customers</span><b id="customerCount">0</b></div>
+<div class="item"><span>Total Suppliers</span><b id="supplierCount">0</b></div>
+<div class="item"><span>Stock Products</span><b id="stockCount">0</b></div>
+<div class="item"><span>Total Transactions</span><b id="entryCount">0</b></div>
+</div>
+
+<div class="panel">
+<h3>Quick Actions</h3>
+<div class="actions">
+<button class="gold" onclick="go('sales')">+ New Sale</button>
+<button class="dark" onclick="go('purchase')">+ Purchase</button>
+<button class="light" onclick="go('expense')">+ Expense</button>
+<button class="light" onclick="go('stock')">+ Add Stock</button>
+</div>
+</div>
 </section>
-</div>
 
-<div id="sales" class="hidden">
-<section>
-<h3>Add New Sale</h3>
+<!-- SALES -->
+<section class="page" id="sales">
+<div class="panel">
+<h3>New Sales Invoice</h3>
 <label>Customer Name</label>
-<input id="saleName" placeholder="Customer name">
-<label>Sale Amount (₹)</label>
-<input id="saleAmount" type="number" min="0" placeholder="Enter amount">
-<button onclick="add('sale')">Save Sale</button>
-</section>
-</div>
-
-<div id="expenses" class="hidden">
-<section>
-<h3>Add New Expense</h3>
-<label>Expense Details</label>
-<input id="expenseName" placeholder="Expense name">
+<input id="saleName" placeholder="Enter customer name">
+<label>Product / Description</label>
+<input id="saleProduct" placeholder="Product name">
 <label>Amount (₹)</label>
-<input id="expenseAmount" type="number" min="0" placeholder="Enter amount">
-<button onclick="add('expense')">Save Expense</button>
+<input id="saleAmount" type="number" min="0" placeholder="Enter amount">
+<label>Payment Status</label>
+<select id="saleStatus">
+<option value="Paid">Paid</option>
+<option value="Credit">Credit / Udhaar</option>
+</select>
+<button class="gold full" onclick="addEntry('sale')">Save Sales Invoice</button>
+</div>
 </section>
+
+<!-- PURCHASE -->
+<section class="page" id="purchase">
+<div class="panel">
+<h3>New Purchase Entry</h3>
+<label>Supplier Name</label>
+<input id="purchaseName" placeholder="Supplier name">
+<label>Product</label>
+<input id="purchaseProduct" placeholder="Product name">
+<label>Amount (₹)</label>
+<input id="purchaseAmount" type="number" min="0" placeholder="Purchase amount">
+<label>Payment Status</label>
+<select id="purchaseStatus">
+<option value="Paid">Paid</option>
+<option value="Credit">Credit / Baki</option>
+</select>
+<button class="gold full" onclick="addEntry('purchase')">Save Purchase</button>
+</div>
+</section>
+
+<!-- EXPENSES -->
+<section class="page" id="expense">
+<div class="panel">
+<h3>Business Expenses</h3>
+<label>Expense Details</label>
+<input id="expenseName" placeholder="Rent, electricity, transport etc.">
+<label>Amount (₹)</label>
+<input id="expenseAmount" type="number" min="0" placeholder="Amount">
+<button class="gold full" onclick="addEntry('expense')">Save Expense</button>
+</div>
+</section>
+
+<!-- CUSTOMERS -->
+<section class="page" id="customers">
+<div class="panel">
+<h3>Add Customer</h3>
+<label>Customer Name</label>
+<input id="customerName" placeholder="Full name">
+<label>Mobile Number</label>
+<input id="customerPhone" placeholder="Mobile number" type="tel">
+<button class="gold full" onclick="addPerson('customer')">Save Customer</button>
+</div>
+<div class="panel">
+<h3>Customer Directory</h3>
+<div id="customerList"></div>
+</div>
+</section>
+
+<!-- SUPPLIERS -->
+<section class="page" id="suppliers">
+<div class="panel">
+<h3>Add Supplier</h3>
+<label>Supplier Name</label>
+<input id="supplierName" placeholder="Full name">
+<label>Mobile Number</label>
+<input id="supplierPhone" placeholder="Mobile number" type="tel">
+<button class="gold full" onclick="addPerson('supplier')">Save Supplier</button>
+</div>
+<div class="panel">
+<h3>Supplier Directory</h3>
+<div id="supplierList"></div>
+</div>
+</section>
+
+<!-- STOCK -->
+<section class="page" id="stock">
+<div class="panel">
+<h3>Add Inventory Product</h3>
+<label>Product Name</label>
+<input id="productName" placeholder="Product name">
+<label>Product Code</label>
+<input id="productCode" placeholder="Product code">
+<label>Quantity</label>
+<input id="productQty" type="number" min="0" placeholder="Quantity">
+<label>Purchase Price (₹)</label>
+<input id="productPrice" type="number" min="0" placeholder="Purchase price">
+<button class="gold full" onclick="addProduct()">Save Product</button>
+</div>
+<div class="panel">
+<h3>Stock Inventory</h3>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Product</th><th>Code</th><th>Qty</th><th>Price</th></tr></thead>
+<tbody id="stockList"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<!-- REPORTS -->
+<section class="page" id="reports">
+<div class="panel">
+<h3>Financial Summary</h3>
+<div class="item"><span>Total Sales</span><b id="rSales">₹0</b></div>
+<div class="item"><span>Total Purchase</span><b id="rPurchase">₹0</b></div>
+<div class="item"><span>Total Expenses</span><b id="rExpense">₹0</b></div>
+<div class="item"><span>Net Balance</span><b id="rNet">₹0</b></div>
+<button class="dark full" onclick="backup()">Download Business Backup</button>
+</div>
+<div class="panel">
+<h3>Recent Transactions</h3>
+<div id="records"></div>
+</div>
+<div class="notice">
+Net balance is calculated as Sales minus Purchase minus Expenses.
+This is a basic cash-flow estimate, not a final accounting profit.
+</div>
+</section>
+
+<div class="notice">
+Your data is currently stored in this browser on this device.
+Download regular backups. Online sync and multi-device access are not yet enabled.
+</div>
 </div>
 
-<div id="records" class="hidden">
-<section>
-<h3>Transaction Records</h3>
-<div id="list">No records yet.</div>
-</section>
+<div class="bottom">
+<button class="active" onclick="bottomGo('home',this)"><span>⌂</span>Home</button>
+<button onclick="bottomGo('sales',this)"><span>＋</span>Sales</button>
+<button onclick="bottomGo('purchase',this)"><span>▤</span>Purchase</button>
+<button onclick="bottomGo('reports',this)"><span>▥</span>Reports</button>
+<button onclick="bottomGo('customers',this)"><span>♙</span>Accounts</button>
 </div>
-</main>
 
 <script>
-let entries=JSON.parse(localStorage.getItem('fazataEntries')||'[]');
+const KEY='fazata_pro_v2';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
+entries:[],customers:[],suppliers:[],products:[]
+};
 
 function save(){
-localStorage.setItem('fazataEntries',JSON.stringify(entries));
-update();
+localStorage.setItem(KEY,JSON.stringify(db));
+render();
 }
-
-function add(type){
+function money(n){
+return '₹'+Number(n||0).toLocaleString('en-IN');
+}
+function sum(type){
+return db.entries.filter(e=>e.type===type)
+.reduce((s,e)=>s+e.amount,0);
+}
+function go(id,btn){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+if(btn)btn.classList.add('active');
+document.getElementById('pageTitle').textContent=
+({home:'Business Dashboard',sales:'Sales Management',
+purchase:'Purchase Management',expense:'Expense Management',
+customers:'Customer Accounts',suppliers:'Supplier Accounts',
+stock:'Stock Management',reports:'Business Reports'})[id];
+}
+function bottomGo(id,btn){
+go(id);
+document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+}
+function addEntry(type){
 let name=document.getElementById(type+'Name').value.trim();
 let amount=Number(document.getElementById(type+'Amount').value);
+let product=type==='expense'?'':document.getElementById(type+'Product').value.trim();
+let status=type==='expense'?'Paid':document.getElementById(type+'Status').value;
 if(!name||!Number.isFinite(amount)||amount<=0){
 alert('Please enter a name and valid amount.');
 return;
 }
-entries.unshift({
-type:type,
-name:name,
-amount:amount,
-date:new Date().toLocaleDateString()
+db.entries.unshift({
+id:Date.now(),type,name,product,amount,status,
+date:new Date().toLocaleDateString('en-IN')
 });
-document.getElementById(type+'Name').value='';
-document.getElementById(type+'Amount').value='';
 save();
 alert('Entry saved successfully!');
-show('dashboard',document.querySelector('nav button'));
+['Name','Amount','Product'].forEach(x=>{
+let el=document.getElementById(type+x);
+if(el)el.value='';
+});
+go('home');
 }
-
-function update(){
-let sales=entries.filter(x=>x.type==='sale').reduce((a,b)=>a+b.amount,0);
-let expenses=entries.filter(x=>x.type==='expense').reduce((a,b)=>a+b.amount,0);
-document.getElementById('totalSales').textContent='₹'+sales.toLocaleString('en-IN');
-document.getElementById('totalExpenses').textContent='₹'+expenses.toLocaleString('en-IN');
-document.getElementById('balance').textContent='₹'+(sales-expenses).toLocaleString('en-IN');
-document.getElementById('count').textContent=entries.length;
-document.getElementById('list').innerHTML=entries.length?
-entries.map(x=>`<div class="entry">
-<strong>${escapeText(x.name)}</strong><br>
-<small>${x.date} · ${x.type}</small>
-<strong class="${x.type==='sale'?'green':'red'}" style="float:right">
-${x.type==='sale'?'+':'-'}₹${x.amount.toLocaleString('en-IN')}
-</strong></div>`).join(''):'No records yet.';
+function addPerson(type){
+let name=document.getElementById(type+'Name').value.trim();
+let phone=document.getElementById(type+'Phone').value.trim();
+if(!name){alert('Enter name');return}
+db[type+'s'].push({name,phone});
+document.getElementById(type+'Name').value='';
+document.getElementById(type+'Phone').value='';
+save();
+alert('Saved successfully!');
 }
-
-function escapeText(value){
-return String(value).replace(/[&<>"']/g,c=>({
-'&':'&amp;','<':'&lt;','>':'&gt;',
-'"':'&quot;',"'":'&#39;'
+function addProduct(){
+let name=document.getElementById('productName').value.trim();
+let code=document.getElementById('productCode').value.trim();
+let qty=Number(document.getElementById('productQty').value);
+let price=Number(document.getElementById('productPrice').value);
+if(!name||qty<0||price<0){alert('Enter valid product details');return}
+db.products.push({name,code,qty,price});
+['productName','productCode','productQty','productPrice'].forEach(id=>document.getElementById(id).value='');
+save();
+alert('Product saved!');
+}
+function esc(s){
+return String(s??'').replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
 }[c]));
 }
-
-function show(id,btn){
-['dashboard','sales','expenses','records'].forEach(x=>{
-document.getElementById(x).classList.add('hidden');
+function render(){
+let s=sum('sale'),p=sum('purchase'),e=sum('expense'),net=s-p-e;
+[['salesTotal',s],['purchaseTotal',p],['expenseTotal',e],
+['netTotal',net],['rSales',s],['rPurchase',p],
+['rExpense',e],['rNet',net]].forEach(([id,v])=>{
+document.getElementById(id).textContent=money(v);
 });
-document.getElementById(id).classList.remove('hidden');
-document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
-btn.classList.add('active');
-}
+document.getElementById('customerCount').textContent=db.customers.length;
+document.getElementById('supplierCount').textContent=db.suppliers.length;
+document.getElementById('stockCount').textContent=db.products.length;
+document.getElementById('entryCount').textContent=db.entries.length;
 
-update();
+['customer','supplier'].forEach(type=>{
+document.getElementById(type+'List').innerHTML=db[type+'s'].map(x=>
+`<div class="item"><div><b>${esc(x.name)}</b><div class="muted">${esc(x.phone)}</div></div></div>`
+).join('')||'<div class="empty">No records yet.</div>';
+});
+
+document.getElementById('stockList').innerHTML=db.products.map(x=>
+`<tr><td>${esc(x.name)}</td><td>${esc(x.code)}</td><td>${x.qty}</td><td>${money(x.price)}</td></tr>`
+).join('')||'<tr><td colspan="4">No products added.</td></tr>';
+
+document.getElementById('records').innerHTML=db.entries.slice(0,50).map(x=>
+`<div class="item"><div><b>${esc(x.name)}</b><div class="muted">${esc(x.date)} · ${esc(x.type)} · ${esc(x.status)}</div></div><b>${money(x.amount)}</b></div>`
+).join('')||'<div class="empty">No transactions yet.</div>';
+}
+function backup(){
+let file=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});
+let url=URL.createObjectURL(file);
+let a=document.createElement('a');
+a.href=url;a.download='fazata-business-backup.json';a.click();
+URL.revokeObjectURL(url);
+}
+render();
 </script>
 </body>
 </html>
